@@ -7,6 +7,12 @@ import {
   ProductPageActions,
   ProductsAPIActions,
 } from '../state/product.actions';
+import {
+  selectProducts,
+  selectProductsCode,
+  selectProductsLoading,
+  selectProductsTotal,
+} from '../state/product.selector';
 
 @Component({
   selector: 'app-products-page',
@@ -14,13 +20,11 @@ import {
   styleUrls: ['./products-page.component.css'],
 })
 export class ProductsPageComponent {
-  products$ = this.store.select((state: any) => state.products.products);
-  total = 0;
-  loading$ = this.store.select((state: any) => state.products.loading);
+  products$ = this.store.select(selectProducts);
+  total$ = this.store.select(selectProductsTotal);
+  loading$ = this.store.select(selectProductsLoading);
+  showProductCode$ = this.store.select(selectProductsCode);
 
-  showProductCode$ = this.store.select(
-    (state: any) => state.products.showProductCode
-  );
   errorMessage = '';
 
   constructor(private productsService: ProductsService, private store: Store) {
@@ -38,7 +42,6 @@ export class ProductsPageComponent {
         this.store.dispatch(
           ProductsAPIActions.productsLoadedSuccess({ products })
         );
-        this.total = sumProducts(products);
       },
       error: (error) => (this.errorMessage = error),
     });
