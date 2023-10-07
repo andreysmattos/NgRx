@@ -1,7 +1,7 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Product } from '../product.model';
 
-export const ProductPageActions = createActionGroup({
+export const ProductsPageActions = createActionGroup({
   source: 'Products Page',
   events: {
     'Toggle Show Product Code': emptyProps(),
@@ -24,7 +24,7 @@ export const ProductsAPIActions = createActionGroup({
     'Products Updated Success': props<{ product: Product }>(),
     'Products Updated Fail': props<{ message: string }>(),
 
-    'Deleted Updated Success': props<{ id: number }>(),
-    'Deleted Updated Fail': props<{ message: string }>(),
+    'Products Deleted Success': props<{ id: number }>(),
+    'Products Deleted Fail': props<{ message: string }>(),
   },
 });

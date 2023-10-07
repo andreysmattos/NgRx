@@ -4,12 +4,13 @@ import { Product } from '../product.model';
 import { ProductsService } from '../products.service';
 import { Store } from '@ngrx/store';
 import {
-  ProductPageActions,
+  ProductsPageActions,
   ProductsAPIActions,
 } from '../state/product.actions';
 import {
   selectProducts,
   selectProductsCode,
+  selectProductsErrorMessage,
   selectProductsLoading,
   selectProductsTotal,
 } from '../state/product.selector';
@@ -25,29 +26,17 @@ export class ProductsPageComponent {
   loading$ = this.store.select(selectProductsLoading);
   showProductCode$ = this.store.select(selectProductsCode);
 
-  errorMessage = '';
+  errorMessage$ = this.store.select(selectProductsErrorMessage);
 
-  constructor(private productsService: ProductsService, private store: Store) {
+  constructor(private store: Store) {
     this.store.subscribe({ next: (value) => console.log('value', value) });
   }
 
   ngOnInit() {
-    this.getProducts();
-  }
-
-  getProducts() {
-    this.store.dispatch(ProductPageActions.loadProducts());
-    this.productsService.getAll().subscribe({
-      next: (products) => {
-        this.store.dispatch(
-          ProductsAPIActions.productsLoadedSuccess({ products })
-        );
-      },
-      error: (error) => (this.errorMessage = error),
-    });
+    this.store.dispatch(ProductsPageActions.loadProducts());
   }
 
   toggleShowProductCode() {
-    this.store.dispatch(ProductPageActions.toggleShowProductCode());
+    this.store.dispatch(ProductsPageActions.toggleShowProductCode());
   }
 }
